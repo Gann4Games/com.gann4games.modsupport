@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System;
 using System.IO;
+using Gann4Games.ModSupport.Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -14,20 +15,10 @@ namespace Gann4Games.ModSupport
         private static int _thumbnailWidth = 1024;
         private static int _thumbnailHeight = 1024;
 
-        private static Camera CurrentSelectedCamera()
-        {
-            GameObject active = Selection.activeGameObject;
-            if (!active) return null;
-            return active.GetComponent<Camera>();
-        }
-
         private static string ModsRootDirectory => Path.GetFullPath(Path.Combine(Application.dataPath, _modsFolderName));
         private static bool ModsFolderExists => Directory.Exists(ModsRootDirectory);
-        
-        static string ThumbnailSavePath()
-        {
-            return Path.Combine(ModsRootDirectory, "thumbnail.png");
-        }
+
+        private ModCreationThumbnailCapturer _thumbnailCapturer = new(ModsRootDirectory);
         
         [MenuItem("Gann4Games/Mod Support")]
         static void ShowWindow()
@@ -35,38 +26,6 @@ namespace Gann4Games.ModSupport
             GetWindow(typeof(ModCreationWindow));
         }
 
-        static Texture2D GetCameraViewTexture()
-        {
-            Camera camera = CurrentSelectedCamera();
-            var targetTexture = camera.targetTexture;
-            
-            Texture2D image = new Texture2D(targetTexture.width, targetTexture.height);
-            image.ReadPixels(new Rect(0, 0, targetTexture.width, targetTexture.height), 0, 0);
-            image.Apply();
-            return image;
-        }
-        
-        //TODO: Screen capture editor class
-        static void CaptureThumbnail()
-        {
-            #region Create folder if it doesn't exist
-            if (!ModsFolderExists)
-                Directory.CreateDirectory(ModsRootDirectory);
-            #endregion
-            
-            RenderTexture activeRenderTexture = RenderTexture.active;
-            RenderTexture.active = CurrentSelectedCamera().targetTexture;
-            Texture2D image = GetCameraViewTexture();
-            RenderTexture.active = activeRenderTexture;
- 
-            byte[] bytes = image.EncodeToPNG();
-            DestroyImmediate(image);
- 
-            File.WriteAllBytes(ThumbnailSavePath(), bytes);
-            
-            EditorUtility.RevealInFinder(ThumbnailSavePath());
-        }
-        
         private void OnGUI()
         {
             titleContent.text = "Mod Creation";
@@ -87,6 +46,7 @@ namespace Gann4Games.ModSupport
             {
                 GUILayout.Label("Mods root folder name:");
                 _modsFolderName = EditorGUILayout.TextField(_modsFolderName);
+                _thumbnailCapturer.SetModsRootDirectory(ModsRootDirectory);
             }
             EditorGUILayout.EndHorizontal();
             GUILayout.Label("Your files will be stored in the following directory:\n" + ModsRootDirectory);
@@ -96,13 +56,13 @@ namespace Gann4Games.ModSupport
         {
             EditorGUILayout.LabelField("Thumbnail creation", EditorStyles.boldLabel);
 
-            if (!CurrentSelectedCamera())
+            if (!_thumbnailCapturer.CurrentSelectedCamera())
             {
                 EditorGUILayout.HelpBox("Please select a camera to capture the thumbnail from.", MessageType.Warning);
                 return;
             }
             
-            if (!CurrentSelectedCamera().targetTexture)
+            if (!_thumbnailCapturer.CurrentSelectedCamera().targetTexture)
             {
                 EditorGUILayout.HelpBox("Your camera needs a target texture.", MessageType.Warning);
                 GUILayout.Label("Image size (in pixels):");
@@ -116,31 +76,33 @@ namespace Gann4Games.ModSupport
                 }
                 EditorGUILayout.EndHorizontal();
                 if(GUILayout.Button("Create target texture", GUILayout.Height(50)))
-                    CurrentSelectedCamera().targetTexture = new RenderTexture(_thumbnailWidth, _thumbnailHeight, 24);
+                    _thumbnailCapturer.CameraTargetTexture = new RenderTexture(_thumbnailWidth, _thumbnailHeight, 24);
             }
             
-            if (CurrentSelectedCamera().targetTexture)
+            if (_thumbnailCapturer.CameraTargetTexture)
             {
                 if(GUILayout.Button("Save Thumbnail", GUILayout.Height(50)))
-                    CaptureThumbnail();
+                    _thumbnailCapturer.CaptureThumbnail();
 
                 EditorGUILayout.Separator();
                 
-                CurrentSelectedCamera().Render();
+                _thumbnailCapturer.RenderCameraView();
 
                 var lastRect = GUILayoutUtility.GetLastRect();
-                var guiAspectRatio = Mathf.Min(position.width, position.height - lastRect.yMax) / CurrentSelectedCamera().targetTexture.height;
+                var guiAspectRatio = Mathf.Min(position.width, position.height - lastRect.yMax) / _thumbnailCapturer.CurrentSelectedCamera().targetTexture.height;
                 
                 var desiredPosition = new Vector2(
-                    (position.width - CurrentSelectedCamera().targetTexture.width * guiAspectRatio) / 2,
+                    (position.width - _thumbnailCapturer.CameraTargetTexture.width * guiAspectRatio) / 2,
                     lastRect.yMax    
                 );
                 
                 EditorGUI.DrawTextureTransparent(
                     new Rect(
                         desiredPosition,
-                        new(CurrentSelectedCamera().targetTexture.width * guiAspectRatio, CurrentSelectedCamera().targetTexture.height * guiAspectRatio)),
-                    CurrentSelectedCamera().targetTexture
+                        new(
+                            _thumbnailCapturer.CurrentSelectedCamera().targetTexture.width * guiAspectRatio, 
+                            _thumbnailCapturer.CurrentSelectedCamera().targetTexture.height * guiAspectRatio)),
+                    _thumbnailCapturer.CurrentSelectedCamera().targetTexture
                 );
             }
         }
