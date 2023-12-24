@@ -80,20 +80,20 @@ namespace Gann4Games.ModSupport
         {
             if(!Instance) Instance = this;
             
-            // Find all mods found in the base folder (Default Assets/Mods unless you have modified the variables)
+            // Find all mods found in the base folder
+            // EDITOR: Default Assets/Mods unless you have modified the variables
+            // BUILD: GameName_Data/Mods unless you have modified the variables
             List<string> files = FindAllJsonFiles(ModsRootDirectory);
             files.ForEach(i =>
             {
                 // Iterate over each json file and store its data using the ModInfo class.
-                _installedModList.Add(
-                    new ModInfo(FormatPathAccordingly(i)
-                    ));
-            });
-            
-            // Replace all {MOD_NAME} strings in the catalog file to match the mod's name.
-            _installedModList.ForEach(mod =>
-            {
+                ModInfo mod = new ModInfo(FormatPathAccordingly(i));
+                
+                // Fix the bundle paths in the mod file
                 mod.FixBundlePathsInModFile();
+                
+                // Add the mod to the list of installed mods
+                _installedModList.Add(mod);
             });
             
             DisplayInstalledModsOnUI();

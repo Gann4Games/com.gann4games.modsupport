@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEngine;
@@ -30,10 +31,11 @@ namespace WoodCometDemos.BetterModSupport
             EditorGUI.EndProperty();
         }
         
-        // Helper method to get the available labels from Addressables settings
+        /// <returns>Available labels from Addressables settings</returns>
         private string[] GetAvailableLabels()
         {
             return AddressableAssetSettingsDefaultObject.Settings.GetLabels().ToArray();
         }
     }
 }
+#endif
