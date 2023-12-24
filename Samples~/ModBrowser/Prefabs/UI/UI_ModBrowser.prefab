@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1141510060727146356}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -166,7 +165,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3615873522732059147}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -302,7 +300,6 @@ RectTransform:
   - {fileID: 7965498373931863661}
   - {fileID: 1141510060727146356}
   m_Father: {fileID: 2141216277440748335}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
@@ -321,8 +318,9 @@ GameObject:
   - component: {fileID: 7344149647739757035}
   - component: {fileID: 5889428685336346165}
   - component: {fileID: 3508407874992627421}
+  - component: {fileID: 4664776807919047155}
   m_Layer: 5
-  m_Name: UI_ModCatalogViewer
+  m_Name: UI_ModBrowser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,7 +340,6 @@ RectTransform:
   m_Children:
   - {fileID: 3615873522732059147}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -412,6 +409,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4664776807919047155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431184737298134984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d2b40f0f0c875c449ec241dee6d2ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modRootFolderName: Mods
+  findByLabel:
+    m_LabelString: SHIT
+  uiSelectedModTextDisplay: {fileID: 4637642045145143329}
+  modCatalogContainer: {fileID: 7965498373931863661}
+  uiModLoaderButtonPrefab: {fileID: 5114819888995693310, guid: 499960c9d9e68594a85d7912e2b5083a, type: 3}
 --- !u!1 &8096127984546445793
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,7 +438,7 @@ GameObject:
   - component: {fileID: 7965498373931863661}
   - component: {fileID: 8474341890944782712}
   m_Layer: 5
-  m_Name: ModCatalogList
+  m_Name: ModCatalogContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -442,7 +457,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3615873522732059147}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -506,7 +520,6 @@ RectTransform:
   m_Children:
   - {fileID: 6433753742926778005}
   m_Father: {fileID: 3615873522732059147}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -595,8 +608,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ModManager, Assembly-CSharp
+      - m_Target: {fileID: 4664776807919047155}
+        m_TargetAssemblyTypeName: Gann4Games.ModSupport.ModManager, ModSupport
         m_MethodName: SpawnSelectedMod
         m_Mode: 1
         m_Arguments:
