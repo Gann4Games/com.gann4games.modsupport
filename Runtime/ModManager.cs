@@ -9,17 +9,6 @@ using System.IO;
 using TMPro;
 using UnityEngine.Serialization;
 
-// CONTRIBUTION BY GANN4LIFE
-// The original file is tied to a speficic hierarchy and named for maps.
-// I want something more flexible instead so I'm using my free time to modify and improve these scripts to share later.
-// 
-// For now I just want to:
-// * Export ALL mods to a single folder.
-// * Mods are ordered by their label or category (hopefully)
-// 
-// New hierarchy:
-// {Application.dataPath}/Mods/[Category]/[ModName]/[Platform]/*.json <- Note that we do not care about its name, we just care about its extension.
-
 namespace Gann4Games.ModSupport
 {
     public class ModManager : MonoBehaviour

@@ -19,7 +19,7 @@ namespace Gann4Games.ModSupport
         [Tooltip("Raw Image component that will display the mod's thumbnail.")] 
         [SerializeField] private RawImage modThumbnail;
 
-    private ModInfo _selectedModInformation;
+        private ModInfo _selectedModInformation;
 
         /// <summary>
         /// Configures the prefab to load the provided mod, then display the mod's name and description.
