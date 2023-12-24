@@ -24,14 +24,8 @@ namespace Gann4Games.ModSupport
         private static string ModsRootDirectory => Path.GetFullPath(Path.Combine(Application.dataPath, _modsFolderName));
         private static bool ModsFolderExists => Directory.Exists(ModsRootDirectory);
         
-        static string SavePath()
+        static string ThumbnailSavePath()
         {
-            ModManager manager = ModManager.Instance;
-            if (!ModManager.Instance) manager = FindAnyObjectByType<ModManager>();
-
-            if (!manager)
-                throw new Exception("Unable to find the mods path, please add a ModManager component somewhere");
-            
             return Path.Combine(ModsRootDirectory, "thumbnail.png");
         }
         
@@ -52,6 +46,7 @@ namespace Gann4Games.ModSupport
             return image;
         }
         
+        //TODO: Screen capture editor class
         static void CaptureThumbnail()
         {
             #region Create folder if it doesn't exist
@@ -67,9 +62,9 @@ namespace Gann4Games.ModSupport
             byte[] bytes = image.EncodeToPNG();
             DestroyImmediate(image);
  
-            File.WriteAllBytes(SavePath(), bytes);
+            File.WriteAllBytes(ThumbnailSavePath(), bytes);
             
-            EditorUtility.RevealInFinder(SavePath());
+            EditorUtility.RevealInFinder(ThumbnailSavePath());
         }
         
         private void OnGUI()
