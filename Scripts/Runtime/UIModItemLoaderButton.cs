@@ -4,9 +4,9 @@ using TMPro;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace WoodCometDemos.BetterModSupport
+namespace Gann4Games.ModSupport
 {
-    public class ModPrefab : MonoBehaviour
+    public class UIModItemLoaderButton : MonoBehaviour
     {
         [FormerlySerializedAs("Name")] [Tooltip("UI Text item that will display the mod's name.")] [SerializeField]
         private TextMeshProUGUI modNameTextField;

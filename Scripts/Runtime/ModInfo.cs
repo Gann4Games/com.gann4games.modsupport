@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace WoodCometDemos.BetterModSupport
+namespace Gann4Games.ModSupport
 {
     public class ModInfo
     {

@@ -20,7 +20,7 @@ using UnityEngine.Serialization;
 // New hierarchy:
 // {Application.dataPath}/Mods/[Category]/[ModName]/[Platform]/*.json <- Note that we do not care about its name, we just care about its extension.
 
-namespace WoodCometDemos.BetterModSupport
+namespace Gann4Games.ModSupport
 {
     public class ModManager : MonoBehaviour
     {
@@ -118,7 +118,7 @@ namespace WoodCometDemos.BetterModSupport
             foreach (ModInfo mod in _installedModList)
             {
                 RectTransform modButton = Instantiate(uiModLoaderButtonPrefab, modCatalogContainer.transform.position, modCatalogContainer.transform.rotation, modCatalogContainer.transform).GetComponent<RectTransform>();
-                modButton.GetComponent<ModPrefab>().SetupModPrefab(mod);
+                modButton.GetComponent<UIModItemLoaderButton>().SetupModPrefab(mod);
             }
         }
         

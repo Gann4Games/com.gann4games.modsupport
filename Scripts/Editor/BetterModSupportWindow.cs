@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace WoodCometDemos.BetterModSupport
+namespace Gann4Games.ModSupport
 {
     
     public class BetterModSupportWindow : EditorWindow
@@ -24,7 +24,7 @@ namespace WoodCometDemos.BetterModSupport
             return Path.Combine(manager.ModsRootDirectory, "thumbnail.png");
         }
         
-        [MenuItem("BetterModSupport/Configure")]
+        [MenuItem("Gann4Games/Mod Support")]
         static void ShowWindow()
         {
             GetWindow(typeof(BetterModSupportWindow));
