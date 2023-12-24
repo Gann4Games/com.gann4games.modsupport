@@ -11,9 +11,10 @@ using UnityEngine.Serialization;
 
 namespace Gann4Games.ModSupport
 {
-    public class ModBrowser : MonoBehaviour
+    //TODO: Bring mod loading logic into a mod manager class which is going to have utilities to load mods and use them.
+    public class UIModBrowser : MonoBehaviour
     {
-        public static ModBrowser Instance;
+        public static UIModBrowser Instance;
 
         [Header("General settings")]
         [Tooltip("The folder name to look for mods, the project will also try to search for this folder into the <gamename>_Data folder.\nMake sure the folder is also found in the Addressables profile settings.")]

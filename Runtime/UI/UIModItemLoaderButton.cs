@@ -37,7 +37,7 @@ namespace Gann4Games.ModSupport
         /// </summary>
         public void SelectThisMod()
         {
-            ModBrowser.SelectMod(_selectedModInformation);
+            UIModBrowser.SelectMod(_selectedModInformation);
         }
     }
 }
