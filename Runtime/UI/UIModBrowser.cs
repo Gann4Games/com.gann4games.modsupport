@@ -93,8 +93,9 @@ namespace Gann4Games.ModSupport
                 Quaternion rotation = modCatalogContainer.rotation;
                 RectTransform container = modCatalogContainer;
 
-                _installedModButtons.Add(Instantiate(uiModLoaderButtonPrefab, position, rotation, container));
-                _installedModButtons.ForEach(uiButton => uiButton.SetModToLoad(mod, this));
+                UIModLoadButton button = Instantiate(uiModLoaderButtonPrefab, position, rotation, container);
+                button.SetModToLoad(mod, this);
+                _installedModButtons.Add(button);
             }
         }
         
