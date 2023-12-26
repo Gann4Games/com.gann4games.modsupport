@@ -26,7 +26,7 @@ namespace Gann4Games.ModSupport.Editor
 
         public Camera CurrentSelectedCamera()
         {
-            GameObject active = Selection.activeGameObject;
+            UnityEngine.GameObject active = Selection.activeGameObject;
             if (!active) return null;
             return active.GetComponent<Camera>();
         }
