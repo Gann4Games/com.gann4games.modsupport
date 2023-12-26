@@ -6,7 +6,7 @@
   "unity": "2023.1",
   "unityRelease": "16f1",
   "documentationUrl": "https://github.com/gann4life/com.gann4games.modsupport",
-  "changelogUrl": "https://github.com/gann4life/com.gann4games.modsupport",
+  "changelogUrl": "https://github.com/Gann4Games/com.gann4games.modsupport/blob/release/CHANGELOG.md",
   "licensesUrl": "https://github.com/gann4life/com.gann4games.modsupport",
   "dependencies": {
     "com.unity.addressables": "1.21.19"
