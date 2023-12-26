@@ -8,7 +8,7 @@ namespace Gann4Games.ModSupport.Editor
 {
     public class ModCreationThumbnailCapturer
     {
-        public string ThumbnailSavePath => Path.Combine(_modsRootDirectory, "thumbnail.png");
+        // public string ThumbnailSavePath => Path.Combine(_modsRootDirectory, "thumbnail.png");
         private bool ModsFolderExists => Directory.Exists(_modsRootDirectory);
         private string _modsRootDirectory;
         
@@ -27,7 +27,7 @@ namespace Gann4Games.ModSupport.Editor
 
         public Camera CurrentSelectedCamera()
         {
-            UnityEngine.GameObject active = Selection.activeGameObject;
+            GameObject active = Selection.activeGameObject;
             if (!active) return null;
             return active.GetComponent<Camera>();
         }
@@ -49,11 +49,17 @@ namespace Gann4Games.ModSupport.Editor
             return image;
         }
         
-        public void CaptureThumbnail()
+        public void CaptureThumbnail(string destinationDirectory)
         {
+            if (string.IsNullOrEmpty(destinationDirectory))
+                throw new Exception("Please provide a destination folder!");
+            
+            string fileSavePath = Path.Combine(destinationDirectory, "thumbnail.png");
+            bool destinationExists = Directory.Exists(destinationDirectory);
+            
             #region Create folder if it doesn't exist
-            if (!ModsFolderExists)
-                throw new Exception("Mods folder doesn't exist, please create it first.");
+            if (!destinationExists)
+                throw new Exception("Mod folder doesn't exist, please create it first.");
             #endregion
             
             RenderTexture activeRenderTexture = RenderTexture.active;
@@ -64,9 +70,9 @@ namespace Gann4Games.ModSupport.Editor
             byte[] bytes = image.EncodeToPNG();
             // MonoBehaviour.DestroyImmediate(image);
  
-            File.WriteAllBytes(ThumbnailSavePath, bytes);
+            File.WriteAllBytes(fileSavePath, bytes);
             
-            EditorUtility.RevealInFinder(ThumbnailSavePath);
+            EditorUtility.RevealInFinder(fileSavePath);
         }
         
         public void RenderCameraView()
