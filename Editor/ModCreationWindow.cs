@@ -1,10 +1,9 @@
 #if UNITY_EDITOR
-using System;
 using System.IO;
+using System.Linq;
 using Gann4Games.ModSupport.Editor;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Gann4Games.ModSupport
 {
@@ -32,6 +31,8 @@ namespace Gann4Games.ModSupport
             
             SettingsSection();
             EditorGUILayout.Separator();
+            ModDeliverySection();
+            EditorGUILayout.Separator();
             ThumbnailSection();
         }
 
@@ -50,6 +51,67 @@ namespace Gann4Games.ModSupport
             }
             EditorGUILayout.EndHorizontal();
             GUILayout.Label("Your files will be stored in the following directory:\n" + ModsRootDirectory);
+        }
+
+        private string _modName = "Your mod name";
+        private string _modDescription = "";
+        string UnbundledModPath => Path.Combine(ModsRootDirectory, "MOD_NAME");
+        
+        
+        private void ModDeliverySection()
+        {
+            EditorGUILayout.LabelField("Mod Delivery", EditorStyles.boldLabel);
+
+            if (!Directory.Exists(Path.Combine(ModsRootDirectory, "MOD_NAME")))
+            {
+                EditorGUILayout.HelpBox("Build your mod using the Addressables group window to begin.", MessageType.Warning);
+            }
+            else
+            {
+                TextField("Mod name: ", ref _modName);
+                TextField("Mod description: ", ref _modDescription);
+                
+                if(Directory.Exists(Path.Combine(ModsRootDirectory, _modName)))
+                    EditorGUILayout.HelpBox("A mod with this name already exists, any new files will be moved there.", MessageType.Info);
+
+                if (GUILayout.Button("Create mod", GUILayout.Height(50)))
+                    CreateMod(_modName, _modDescription);
+            }
+        }
+        
+        void CreateMod(string modName, string description)
+        {
+            string newDirectory = Path.Combine(ModsRootDirectory, modName);
+            if(!Directory.Exists(newDirectory))
+                Directory.Move(UnbundledModPath, newDirectory);
+            else
+            {
+                Directory.EnumerateFileSystemEntries(UnbundledModPath).ToList().ForEach(path =>
+                {
+                    string newPath = Path.Combine(newDirectory, Path.GetFileName(path));
+                    if(File.Exists(path))
+                        File.Move(path, newPath);
+                    else if(Directory.Exists(path))
+                        Directory.Move(path, newPath);
+                });
+            }
+                
+            // Move thumbnail to the new created folder
+            string thumbnailPath = Path.Combine(ModsRootDirectory, "thumbnail.png");
+            if (File.Exists(thumbnailPath))
+            {
+                string newThumbnailPath = Path.Combine(newDirectory, "thumbnail.png");
+                File.Move(thumbnailPath, newThumbnailPath);
+            }
+
+            if(!string.IsNullOrEmpty(description))
+            {
+                // Create a description.txt file inside the mod path
+                string descriptionPath = Path.Combine(newDirectory, "description.txt");
+                File.WriteAllText(descriptionPath, description);
+            }
+            
+            AssetDatabase.Refresh();
         }
         
         private void ThumbnailSection()
@@ -105,6 +167,16 @@ namespace Gann4Games.ModSupport
                     _thumbnailCapturer.CurrentSelectedCamera().targetTexture
                 );
             }
+        }
+        
+        private void TextField(string name, ref string value)
+        {
+            EditorGUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(name);
+                value = EditorGUILayout.TextField(value);
+            }
+            EditorGUILayout.EndHorizontal();
         }
     }
 }
