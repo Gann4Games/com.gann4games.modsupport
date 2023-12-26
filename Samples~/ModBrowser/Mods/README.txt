@@ -1,0 +1,1 @@
+In this folder you will find some example mods, drag them to your own mods folder (located at Assets/Mods by default) if you want to quickly test the mod browser.
