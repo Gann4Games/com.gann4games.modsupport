@@ -1,6 +1,6 @@
 {
   "name": "com.gann4games.modsupport",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "displayName": "Mod Support",
   "description": "Enables mod support for your game and also provides tools for mod makers thanks to Unity Addressables.",
   "unity": "2023.1",
